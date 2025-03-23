@@ -1,0 +1,8 @@
+x64/
+.vs/
+Debug/*
+!Debug/in.txt
+!Debug/out.txt
+out/
+remove/
+DELETE/

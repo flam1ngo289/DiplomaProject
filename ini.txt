@@ -1,0 +1,8 @@
+host: localhost
+port: 5432
+dbname: Diploma_project
+user: project_user
+password: project_password
+start_page: https://en.wikipedia.org/wiki/Wikipedia
+recursion_depth: 2
+port_search: 8080
