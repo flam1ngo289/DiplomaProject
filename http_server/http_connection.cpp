@@ -175,11 +175,15 @@ void HttpConnection::createResponsePost() {
 		std::map<std::string, float> linkAmount;
 
 		for (auto word : input_low) {
-			pqxx::result r_link = pq_work.exec("SELECT DISTINCT d.name, w.amount  FROM documents_words dw "
-											   "JOIN words w ON dw.words = w.id "
-											   "JOIN documents d ON dw.documents = d.id "
-											   "WHERE w.name = '" + word + "' "
-											   "ORDER BY w.amount DESC;");
+			pqxx::result r_link = pq_work.exec_params(
+				"SELECT DISTINCT d.name, w.amount FROM documents_words dw "
+				"JOIN words w ON dw.words = w.id "
+				"JOIN documents d ON dw.documents = d.id "
+				"WHERE w.name = $1 "
+				"ORDER BY w.amount DESC",
+				word
+			);
+
 			std::string this_link = "";
 			int this_amount = 0;
 			bool b_link = true;

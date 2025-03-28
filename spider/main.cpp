@@ -17,6 +17,8 @@ std::mutex mtx;
 std::condition_variable cv;
 std::queue<std::function<void()>> tasks;
 bool exitThreadPool = false;
+const std::string config_path = "config.ini";
+std::ifstream file(config_path);
 
 void threadPoolWorker();
 void parseLink(const Link& link, int depth, const std::string& connectStr);
@@ -134,9 +136,7 @@ void parseLink(const Link& link, int depth, const std::string& connectStr) {
 		std::string linkStr = linkToString(link);
 		pqxx::connection con(connectStr);
 		pqxx::work pq_work(con);
-		pqxx::result r_link = pq_work.exec("SELECT name FROM documents "
-											"WHERE name = '" +
-											linkStr + "';");
+		pqxx::result r_link = pq_work.exec_params("SELECT name FROM documents WHERE name = $1", linkStr);
 		pq_work.commit();
 
 		std::string html = getHtmlContent(link);
